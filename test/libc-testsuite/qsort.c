@@ -21,6 +21,7 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 #define _GNU_SOURCE
+#include <inttypes.h>
 #include <stdlib.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -33,7 +34,7 @@ static int scmp(const void *a, const void *b)
 
 static int icmp(const void *a, const void *b)
 {
-	return *(int*)a - *(int*)b;
+	return *(int32_t*)a - *(int32_t*)b;
 }
 
 struct three {
@@ -78,7 +79,7 @@ int test_qsort(void)
 		"Ursula", "Sam"
 	};
 	/* 23 items -- odd, prime */
-	int n[] = {
+	int32_t n[] = {
 		879045, 394, 99405644, 33434, 232323, 4334, 5454,
 		343, 45545, 454, 324, 22, 34344, 233, 45345, 343,
 		848405, 3434, 3434344, 3535, 93994, 2230404, 4334
@@ -100,12 +101,12 @@ int test_qsort(void)
 		}
 	}
 
-	qsort(n, sizeof(n)/sizeof(int), sizeof(int), icmp);
-	for (i=0; i<(int)(sizeof(n)/sizeof(int)-1); i++) {
+	qsort(n, sizeof(n)/sizeof(int32_t), sizeof(int32_t), icmp);
+	for (i=0; i<(int)(sizeof(n)/sizeof(int32_t)-1); i++) {
 		if (n[i] > n[i+1]) {
 			FAIL("integer sort");
-			for (i=0; i<(int)(sizeof(n)/sizeof(int)); i++)
-				printf("\t%d\n", n[i]);
+			for (i=0; i<(int)(sizeof(n)/sizeof(int32_t)); i++)
+				printf("\t%" PRId32 "\n", n[i]);
 			break;
 		}
 	}
